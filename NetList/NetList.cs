@@ -1,5 +1,4 @@
 ﻿using Nancy;
-using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -52,7 +51,7 @@ namespace NetList
 				return JsonConvert.SerializeObject(listGroup.ReadList(para.listId));
 			};
 
-			//delete a list from the system. Name of list todelete is in the request body.
+			//delete a list from the system. Name of list to delete is in the request body.
 			Delete["/lists"] = para =>
 			{
 				var reader = new StreamReader(this.Request.Body);

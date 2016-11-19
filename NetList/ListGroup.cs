@@ -4,38 +4,60 @@ namespace NetList
 {
 	public class ListGroup : IListGroup
 	{
-		//This is where we store the lists. It's static, so that when this class is constructed by
+		//This is where we store the lists. Lists is static, so that when this class is constructed by
 		//nancy to fulfill the NancyModules needs, the same dictonary object is used, and our data persists.
-		public static Dictionary<string, List<string>> Lists = new Dictionary<string, List<string>>();
+		private static Dictionary<string, List<string>> Lists = new Dictionary<string, List<string>>();
+		private object listsLock = new object();
 
 		public void CreateList(string listId)
 		{
-			Lists.Add(listId, new List<string>());
+			lock (listsLock)
+			{
+				if (!Lists.ContainsKey(listId))
+				{
+					Lists.Add(listId, new List<string>());
+				}
+			}
 		}
 
 		public void CreateListItem(string listId, string listItem)
 		{
-			Lists[listId].Add(listItem);
+			lock (listsLock)
+			{
+				Lists[listId].Add(listItem);
+			}
 		}
 
 		public void DeleteList(string listId)
 		{
-			Lists.Remove(listId);
+			lock (listsLock)
+			{
+				Lists.Remove(listId);
+			}
 		}
 
 		public void DeleteListItem(string listId, string listItem)
 		{
-			Lists[listId].Remove(listItem);
+			lock (listsLock)
+			{
+				Lists[listId].Remove(listItem);
+			}
 		}
 
 		public List<string> ReadList(string listId)
 		{
-			return Lists[listId];
+			lock (listsLock)
+			{
+				return Lists[listId];
+			}
 		}
 
 		public Dictionary<string, List<string>> ReadLists()
 		{
-			return Lists;
+			lock (listsLock)
+			{
+				return Lists;
+			}
 		}
 	}
 }
