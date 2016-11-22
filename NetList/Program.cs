@@ -8,7 +8,6 @@ namespace NetList
 	{
 		static void Main()
 		{
-			Dictionary<string, List<object>> Lists = new Dictionary<string, List<object>>();
 			using (var host = new NancyHost(new Uri("http://localhost:1234")))
 			{
 				host.Start();
